@@ -1,59 +1,55 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version "${springBootVersion}"
-	id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
-	id "org.jsonschema2pojo" version "${jsonSchemaPojoGenerateVersion}"
+    id 'java'
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+    id "org.jsonschema2pojo" version "${jsonSchemaPojoGenerateVersion}"
 }
 
 group = 'pl.dudi'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '21'
+    sourceCompatibility = '21'
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
-	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${openApiStartedVersion}"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${openApiStartedVersion}"
 
-	implementation "javax.validation:validation-api:${javaxValidationApi}"
-	implementation "jakarta.validation:jakarta.validation-api:${jakartaValidationApi}"
+    implementation "javax.validation:validation-api:${javaxValidationApi}"
+    implementation "jakarta.validation:jakarta.validation-api:${jakartaValidationApi}"
 
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'io.projectreactor:reactor-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 
-
-jsonSchema2Pojo{
-	Provider<Directory> output = layout.buildDirectory.dir("/generated-sources/js2p")
-//	targetDirectory = file("$buildDir/generated-sources/js2p")
-	targetDirectory = file(output.get().asFile.path)
-//	targetDirectory = file("${project.rootDir}/generated-sources/js2p")
-	targetPackage = "github.api.responses"
-	generateBuilders = true
-	includeAdditionalProperties = false
-	setSource(files("$projectDir/src/main/resources/json"))
-	setAnnotationStyle("none")
+jsonSchema2Pojo {
+    Provider<Directory> output = layout.buildDirectory.dir("/generated-sources/js2p/githubapi")
+    targetDirectory = file(output.get().asFile.path)
+    targetPackage = "github.api.responses"
+    generateBuilders = true
+    setSource(files("$projectDir/src/main/resources/schemas"))
+    includeGeneratedAnnotation = true
 }
 
 //compileJava.dependsOn tasks.jsonSchema2Pojo
