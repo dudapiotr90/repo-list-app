@@ -52,5 +52,4 @@ jsonSchema2Pojo {
     includeGeneratedAnnotation = true
 }
 
-//compileJava.dependsOn tasks.jsonSchema2Pojo
 compileJava.options.encoding = 'UTF-8'

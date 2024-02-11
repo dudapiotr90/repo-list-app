@@ -1,8 +1,9 @@
-package pl.dudi.repolistapo.configuration;
+package pl.dudi.repolistapp.infrastructure.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.http.codec.json.Jackson2JsonEncoder;
@@ -13,10 +14,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class WebClientConfiguration {
 
     public static final String BASE_URL = "https://api.github.com";
+    public static final String DEFAULT_GITHUB_ACCEPT_HEADER = "application/vnd.github+json";
     @Bean
     public WebClient webClient(final ObjectMapper objectMapper) {
         return WebClient.builder()
             .baseUrl(BASE_URL)
+            .defaultHeader(HttpHeaders.ACCEPT, DEFAULT_GITHUB_ACCEPT_HEADER)
             .exchangeStrategies(exchangeStrategies(objectMapper))
             .build();
     }
@@ -27,7 +30,8 @@ public class WebClientConfiguration {
                 config
                     .defaultCodecs()
                     .jackson2JsonEncoder(new Jackson2JsonEncoder(objectMapper, MediaType.APPLICATION_JSON));
-                config.defaultCodecs()
+                config
+                    .defaultCodecs()
                     .jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper, MediaType.APPLICATION_JSON));
             })
             .build();
