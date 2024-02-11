@@ -1,4 +1,4 @@
-package pl.dudi.repolistapo;
+package pl.dudi.repolistapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
