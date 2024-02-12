@@ -1,8 +1,10 @@
 package pl.dudi.repolistapp.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -21,7 +23,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity
             .status(exception.getStatusCode())
             .contentType(MediaType.APPLICATION_JSON)
-            .body(ErrorMessage.of(exception.getStatusCode(), message));
+            .body(ErrorMessage.of(exception.getStatusCode().value(), message));
     }
 
     private String getUserLogin(WebClientResponseException exception) {
@@ -32,4 +34,13 @@ public class GlobalExceptionHandler {
         return path.substring(beginIndex+beginPattern.length(), endIndex);
     }
 
+    @ExceptionHandler(MissingRequestHeaderException.class)
+    public ResponseEntity<Object> handleMissingAcceptHeader(MissingRequestHeaderException exception) {
+        log.error("Exception: {}, HttpStatus{}",exception.getMessage(),exception.getStatusCode());
+        String message = String.format("Header: [%s=%s] is required" , HttpHeaders.ACCEPT,MediaType.APPLICATION_JSON_VALUE);
+        return ResponseEntity
+            .status(exception.getStatusCode())
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(ErrorMessage.of(exception.getStatusCode().value(), message));
+    }
 }

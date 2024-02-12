@@ -3,11 +3,12 @@ package pl.dudi.repolistapp.infrastructure.mapper;
 import github.api.responses.branches.BranchesSchema;
 import github.api.responses.repos.ReposSchema;
 import org.springframework.stereotype.Component;
-import pl.dudi.repolistapp.dto.UserRepository;
 import pl.dudi.repolistapp.dto.Branch;
+import pl.dudi.repolistapp.dto.UserRepository;
 
 @Component
 public class GithubResponseMapper {
+
     public UserRepository map(ReposSchema repository) {
         return UserRepository.builder()
             .repositoryName(repository.getName())

@@ -1,6 +1,7 @@
 package pl.dudi.repolistapp.infrastructure.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -13,13 +14,15 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfiguration {
 
-    public static final String BASE_URL = "https://api.github.com";
     public static final String DEFAULT_GITHUB_ACCEPT_HEADER = "application/vnd.github+json";
+    @Value("${api.github.url}")
+    private String GITHUB_API_URL;
     @Bean
     public WebClient webClient(final ObjectMapper objectMapper) {
         return WebClient.builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(GITHUB_API_URL)
             .defaultHeader(HttpHeaders.ACCEPT, DEFAULT_GITHUB_ACCEPT_HEADER)
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .exchangeStrategies(exchangeStrategies(objectMapper))
             .build();
     }

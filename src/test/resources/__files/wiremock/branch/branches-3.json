@@ -1,0 +1,26 @@
+[
+  {
+    "name": "gradle-upgrade",
+    "commit": {
+      "sha": "5ec1cc66b6de7a1fb8f55bf1175e325a23be92f3",
+      "url": "https://api.github.com/repos/dudapiotr90/food_orders/commits/5ec1cc66b6de7a1fb8f55bf1175e325a23be92f3"
+    },
+    "protected": false
+  },
+  {
+    "name": "init_db_data",
+    "commit": {
+      "sha": "d1195e67830844fd535c035234674648837cd924",
+      "url": "https://api.github.com/repos/dudapiotr90/food_orders/commits/d1195e67830844fd535c035234674648837cd924"
+    },
+    "protected": false
+  },
+  {
+    "name": "master",
+    "commit": {
+      "sha": "9d935ae290d83ecd77b8e8cb0357d2c8ce97639c",
+      "url": "https://api.github.com/repos/dudapiotr90/food_orders/commits/9d935ae290d83ecd77b8e8cb0357d2c8ce97639c"
+    },
+    "protected": false
+  }
+]

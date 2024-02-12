@@ -1,4 +1,14 @@
 logging:
   level:
     org:
-      springframework: DEBUG
+      springframework: INFO
+
+server:
+  servlet:
+    context-path: /api
+
+api:
+  github:
+    url: https://api.github.com
+
+

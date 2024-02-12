@@ -1,0 +1,8 @@
+api:
+  github:
+    url: http://localhost:9999
+
+logging:
+  level:
+    org:
+      springframework: DEBUG
