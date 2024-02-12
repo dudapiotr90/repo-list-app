@@ -106,7 +106,7 @@ Application accepts only 60 requests per hour due to github restriction policy: 
 ### Development
 
 - Java21
-- Spring
+- SpringBoot 3
 - Lombok
 - jsonschema2pojo
 - springdoc-openapi
