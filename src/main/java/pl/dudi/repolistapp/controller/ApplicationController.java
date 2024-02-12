@@ -12,18 +12,19 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping(ApplicationController.REPOS)
 public class ApplicationController {
 
-    public static final String USER_REPO = "/{name}/repos";
+    public static final String REPOS = "/repos";
+    public static final String USER = "/{username}";
 
     private final ApiService apiService;
-    @GetMapping(value = USER_REPO,headers = "Accept=application/json")
+    @GetMapping(value = USER,headers = "Accept=application/json")
     public ResponseEntity<List<UserRepository>> getNonForkRepositories(
         @RequestHeader(HttpHeaders.ACCEPT) MimeType accept,
-        @PathVariable(name = "name") String name
+        @PathVariable(name = "username") String username
     ) {
-        List<UserRepository> response = apiService.getNonForkRepositories(name);
+        List<UserRepository> response = apiService.getNonForkRepositories(username);
         return ResponseEntity.ok(response);
     }
 

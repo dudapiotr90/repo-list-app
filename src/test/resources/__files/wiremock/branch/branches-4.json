@@ -1,0 +1,18 @@
+[
+  {
+    "name": "master",
+    "commit": {
+      "sha": "c16048dcd78b6c68ea1a8962184dcadd18ab7107",
+      "url": "https://api.github.com/repos/dudapiotr90/Microservice-Demo/commits/c16048dcd78b6c68ea1a8962184dcadd18ab7107"
+    },
+    "protected": false
+  },
+  {
+    "name": "to-test-api-branch",
+    "commit": {
+      "sha": "28709dd57a3e49b6f1245d20a1310c40c629256f",
+      "url": "https://api.github.com/repos/dudapiotr90/Microservice-Demo/commits/28709dd57a3e49b6f1245d20a1310c40c629256f"
+    },
+    "protected": false
+  }
+]

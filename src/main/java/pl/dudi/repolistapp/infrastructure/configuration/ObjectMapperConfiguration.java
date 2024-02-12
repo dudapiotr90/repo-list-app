@@ -13,6 +13,8 @@ public class ObjectMapperConfiguration {
     public ObjectMapper objectMapper() {
         return new ObjectMapper()
             .configure(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS, false)
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,true)
+            ;
     }
 }

@@ -26,31 +26,14 @@ public class GithubApiService implements ApiService {
     private final GithubResponseMapper mapper;
 
     @Override
-    public List<UserRepository> getNonForkRepositories(String name) {
-        List<ReposSchema> repoResponse = getGithubRepos(name);
+    public List<UserRepository> getNonForkRepositories(String username) {
+        List<ReposSchema> repoResponse = getGithubRepos(username);
         List<UserRepository> repositories = filterAndMap(repoResponse);
 
         return repositories.stream()
-            .map(repo -> repo.withBranches(assignBranches(repo)))
+            .map(repo -> repo.withBranches(getBranches(repo)))
             .toList();
     }
-
-    private List<Branch> assignBranches(UserRepository repo) {
-        List<BranchesSchema> branches = webClient.get()
-            .uri(String.format(REPO_BRANCHES_ENDPOINT, repo.getOwnerLogin(), repo.getRepositoryName()))
-            .retrieve()
-            .bodyToFlux(BranchesSchema.class)
-            .collectList()
-            .block();
-
-        if (Objects.isNull(branches)) {
-            return List.of();
-        }
-        return branches.stream()
-            .map(mapper::map)
-            .toList();
-    }
-
 
     private List<ReposSchema> getGithubRepos(String name) {
         List<ReposSchema> githubRepos = webClient
@@ -66,6 +49,24 @@ public class GithubApiService implements ApiService {
         }
         return githubRepos;
     }
+
+    private List<Branch> getBranches(UserRepository repo) {
+        List<BranchesSchema> branches = webClient
+            .get()
+            .uri(String.format(REPO_BRANCHES_ENDPOINT, repo.getOwnerLogin(), repo.getRepositoryName()))
+            .retrieve()
+            .bodyToFlux(BranchesSchema.class)
+            .collectList()
+            .block();
+
+        if (Objects.isNull(branches)) {
+            return List.of();
+        }
+        return branches.stream()
+            .map(mapper::map)
+            .toList();
+    }
+
 
     private List<UserRepository> filterAndMap(List<ReposSchema> repoResponse) {
         return repoResponse.stream()

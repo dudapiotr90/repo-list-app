@@ -1,16 +1,14 @@
 package pl.dudi.repolistapp.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Value
-@Builder
+@Getter
+@NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
 public class ErrorMessage {
 
-    HttpStatusCode status;
+    int status;
     String message;
 }
