@@ -11,4 +11,10 @@ api:
   github:
     url: https://api.github.com
 
+springdoc:
+  api-docs:
+    path: /v3/api_docs
+  swagger-ui:
+    path: swagger/swagger-ui.html
+
 
