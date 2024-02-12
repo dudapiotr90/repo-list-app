@@ -16,12 +16,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
-import pl.dudi.repolistapp.RepoListApoApplication;
+import pl.dudi.repolistapp.RepoListApiApplication;
 import pl.dudi.repolistapp.integration.support.IntegrationTestSupport;
 
 @ActiveProfiles("test")
 @SpringBootTest(
-    classes = RepoListApoApplication.class,
+    classes = RepoListApiApplication.class,
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 public abstract class RestAssuredITBase implements IntegrationTestSupport {

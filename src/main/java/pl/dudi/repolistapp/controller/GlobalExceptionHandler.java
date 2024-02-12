@@ -26,14 +26,6 @@ public class GlobalExceptionHandler {
             .body(ErrorMessage.of(exception.getStatusCode().value(), message));
     }
 
-    private String getUserLogin(WebClientResponseException exception) {
-        String path = Objects.requireNonNull(exception.getRequest()).getURI().getPath();
-        String beginPattern = "users/";
-        int beginIndex = path.indexOf(beginPattern);
-        int endIndex = path.indexOf("/repos");
-        return path.substring(beginIndex+beginPattern.length(), endIndex);
-    }
-
     @ExceptionHandler(MissingRequestHeaderException.class)
     public ResponseEntity<Object> handleMissingAcceptHeader(MissingRequestHeaderException exception) {
         log.error("Exception: {}, HttpStatus{}",exception.getMessage(),exception.getStatusCode());
@@ -42,5 +34,13 @@ public class GlobalExceptionHandler {
             .status(exception.getStatusCode())
             .contentType(MediaType.APPLICATION_JSON)
             .body(ErrorMessage.of(exception.getStatusCode().value(), message));
+    }
+
+    private String getUserLogin(WebClientResponseException exception) {
+        String path = Objects.requireNonNull(exception.getRequest()).getURI().getPath();
+        String beginPattern = "users/";
+        int beginIndex = path.indexOf(beginPattern);
+        int endIndex = path.indexOf("/repos");
+        return path.substring(beginIndex+beginPattern.length(), endIndex);
     }
 }
