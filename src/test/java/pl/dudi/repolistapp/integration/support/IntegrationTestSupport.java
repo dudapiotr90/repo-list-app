@@ -22,6 +22,7 @@ public interface IntegrationTestSupport {
         return Arrays.stream(repoRequest(username)
             .then()
             .statusCode(HttpStatus.OK.value())
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .and()
             .extract()
             .response()
@@ -35,6 +36,7 @@ public interface IntegrationTestSupport {
             .then()
             .statusCode(HttpStatus.NOT_FOUND.value())
             .and()
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .extract()
             .response()
             .as(ErrorMessage.class);

@@ -69,12 +69,14 @@ public class ApplicationController {
     })
     @GetMapping(value = USER,headers = "Accept=application/json")
     public ResponseEntity<List<UserRepository>> getNonForkRepositories(
-        @RequestHeader(HttpHeaders.ACCEPT) String accept,
+        @RequestHeader(HttpHeaders.ACCEPT) String header,
         @Parameter(description = "owner of github account")
         @PathVariable(name = "username") String username
     ) {
         List<UserRepository> response = apiService.getNonForkRepositories(username);
-        return ResponseEntity.ok(response);
+        return ResponseEntity
+            .ok()
+            .header(HttpHeaders.CONTENT_TYPE, header)
+            .body(response);
     }
-
 }

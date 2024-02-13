@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.dudi.repolistapp.controller.ApplicationController;
 import pl.dudi.repolistapp.dto.ErrorMessage;
 import pl.dudi.repolistapp.service.ApiService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = ApplicationController.class)
 @AutoConfigureMockMvc
@@ -39,6 +39,7 @@ public class RestControllerTest {
         // When, Then
         mockMvc.perform(get(ApplicationController.REPOS + ApplicationController.USER, userName))
             .andExpect(status().isBadRequest())
+            .andExpect(header().exists(HttpHeaders.CONTENT_TYPE))
             .andExpect(content().json(objectMapper.writeValueAsString(message)));
     }
 
