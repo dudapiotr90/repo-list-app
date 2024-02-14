@@ -11,18 +11,20 @@ import org.springframework.http.codec.json.Jackson2JsonEncoder;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import static pl.dudi.repolistapp.infrastructure.github.GithubDetails.DEFAULT_GITHUB_ACCEPT_HEADER;
+
 @Configuration
 public class WebClientConfiguration {
 
-    public static final String DEFAULT_GITHUB_ACCEPT_HEADER = "application/vnd.github+json";
+
     @Value("${api.github.url}")
     private String GITHUB_API_URL;
     @Bean
     public WebClient webClient(final ObjectMapper objectMapper) {
         return WebClient.builder()
             .baseUrl(GITHUB_API_URL)
-            .defaultHeader(HttpHeaders.ACCEPT, DEFAULT_GITHUB_ACCEPT_HEADER)
-            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, DEFAULT_GITHUB_ACCEPT_HEADER)
             .exchangeStrategies(exchangeStrategies(objectMapper))
             .build();
     }

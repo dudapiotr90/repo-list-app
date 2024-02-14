@@ -18,3 +18,7 @@ springdoc:
     path: swagger/swagger-ui.html
 
 
+spring:
+  threads:
+    virtual:
+      enable: true

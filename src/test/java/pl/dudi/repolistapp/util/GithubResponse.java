@@ -24,7 +24,7 @@ public class GithubResponse {
             .withFork(false)
             .withName("someRepoName1")
             .withOwner(new Owner()
-                .withName(username)
+                .withLogin(username)
                 .withEmail("somemail1@mail.com"));
     }
 
@@ -33,7 +33,7 @@ public class GithubResponse {
             .withFork(false)
             .withName("someRepoName2")
             .withOwner(new Owner()
-                .withName(username)
+                .withLogin(username)
                 .withEmail("somemail2@mail.com"));
     }
 
@@ -42,7 +42,7 @@ public class GithubResponse {
             .withFork(true)
             .withName("someRepoName3")
             .withOwner(new Owner()
-                .withName(username)
+                .withLogin(username)
                 .withEmail("somemail3@mail.com"));
     }
 

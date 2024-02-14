@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'pl.dudi'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 
 java {
     sourceCompatibility = '21'
@@ -49,7 +49,7 @@ dependencies {
 
 jsonSchema2Pojo {
     Provider<Directory> output = layout.buildDirectory.dir("/generated-sources/js2p/githubapi")
-    targetDirectory = file(output.get().asFile.path)
+    targetDirectory = file(output.get().asFile)
     targetPackage = "github.api.responses"
     generateBuilders = true
     setSource(files("$projectDir/src/main/resources/schemas"))
