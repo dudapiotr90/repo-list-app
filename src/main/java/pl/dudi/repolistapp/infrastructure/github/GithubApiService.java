@@ -4,26 +4,24 @@ import github.api.responses.branches.BranchesSchema;
 import github.api.responses.repos.ReposSchema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import pl.dudi.repolistapp.dto.Branch;
 import pl.dudi.repolistapp.dto.UserRepository;
 import pl.dudi.repolistapp.infrastructure.mapper.GithubResponseMapper;
 import pl.dudi.repolistapp.service.ApiService;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
-@Service
+//@Primary
+@Service("withWebClient")
 @RequiredArgsConstructor
-public class GithubApiService implements ApiService {
-
-    public static final String USER_REPO_ENDPOINT = "/users/%s/repos";
-    public static final String REPO_BRANCHES_ENDPOINT = "/repos/%s/%s/branches";
+public class GithubApiService extends GithubResponseMapper implements ApiService, GithubDetails {
 
     private final WebClient webClient;
-    private final GithubResponseMapper mapper;
 
     @Override
     public List<UserRepository> getNonForkRepositories(String username) {
@@ -35,43 +33,36 @@ public class GithubApiService implements ApiService {
             .toList();
     }
 
-    private List<ReposSchema> getGithubRepos(String name) {
-        List<ReposSchema> githubRepos = webClient
+
+    private List<ReposSchema> getGithubRepos(String name){
+        return webClient
             .get()
-            .uri(String.format(USER_REPO_ENDPOINT, name))
+            .uri(USER_REPO_ENDPOINT, name)
             .retrieve()
+            .onStatus(statusCode -> statusCode.isSameCodeAs(HttpStatus.NOT_FOUND),
+                response -> Mono.error(getUserNotFoundException(name)))
+            .onStatus(s -> s.value() == 403,
+                response -> Mono.error(getRequestPerHourExceededException()))
             .bodyToFlux(ReposSchema.class)
             .collectList()
             .block();
 
-        if (Objects.isNull(githubRepos)) {
-            return List.of();
-        }
-        return githubRepos;
     }
 
     private List<Branch> getBranches(UserRepository repo) {
         List<BranchesSchema> branches = webClient
             .get()
-            .uri(String.format(REPO_BRANCHES_ENDPOINT, repo.getOwnerLogin(), repo.getRepositoryName()))
+            .uri(REPO_BRANCHES_ENDPOINT, repo.ownerLogin(), repo.repositoryName())
             .retrieve()
+            .onStatus(s -> s.value() == 403,
+                response -> Mono.error(getRequestPerHourExceededException()))
             .bodyToFlux(BranchesSchema.class)
             .collectList()
-            .block();
+            .blockOptional()
+            .orElseGet(List::of);
 
-        if (Objects.isNull(branches)) {
-            return List.of();
-        }
         return branches.stream()
-            .map(mapper::map)
-            .toList();
-    }
-
-
-    private List<UserRepository> filterAndMap(List<ReposSchema> repoResponse) {
-        return repoResponse.stream()
-            .filter(repo -> !repo.getFork())
-            .map(mapper::map)
+            .map(this::map)
             .toList();
     }
 }

@@ -6,20 +6,26 @@ import org.springframework.stereotype.Component;
 import pl.dudi.repolistapp.dto.Branch;
 import pl.dudi.repolistapp.dto.UserRepository;
 
+import java.util.List;
+
 @Component
-public class GithubResponseMapper {
+public abstract class GithubResponseMapper {
 
     public UserRepository map(ReposSchema repository) {
-        return UserRepository.builder()
-            .repositoryName(repository.getName())
-            .ownerLogin(repository.getOwner().getLogin())
-            .build();
+        return new UserRepository(
+            repository.getName(),
+            repository.getOwner().getLogin(),
+            null
+        );
     }
 
     public Branch map(BranchesSchema branch) {
-        return Branch.builder()
-            .name(branch.getName())
-            .lastCommitSha(branch.getCommit().getSha())
-            .build();
+        return new Branch(branch.getName(), branch.getCommit().getSha());
+    }
+    protected List<UserRepository> filterAndMap(List<ReposSchema> repoResponse) {
+        return repoResponse.stream()
+            .filter(repo -> !repo.getFork())
+            .map(this::map)
+            .toList();
     }
 }

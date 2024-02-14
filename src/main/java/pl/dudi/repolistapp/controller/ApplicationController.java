@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.dudi.repolistapp.dto.ErrorMessage;
@@ -30,8 +32,6 @@ public class ApplicationController {
     public static final String USER = "/{username}";
 
     private final ApiService apiService;
-
-
 
     @Operation(
         summary = "Get repositories",
@@ -74,9 +74,8 @@ public class ApplicationController {
         @PathVariable(name = "username") String username
     ) {
         List<UserRepository> response = apiService.getNonForkRepositories(username);
-        return ResponseEntity
-            .ok()
-            .header(HttpHeaders.CONTENT_TYPE, header)
-            .body(response);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(response, httpHeaders, HttpStatus.OK);
     }
 }
