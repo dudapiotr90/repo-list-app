@@ -35,6 +35,7 @@ public class GithubApiService extends GithubResponseMapper implements ApiService
 
 
     private List<ReposSchema> getGithubRepos(String name){
+        log.info("Connecting to Github Api...");
         return webClient
             .get()
             .uri(USER_REPO_ENDPOINT, name)
@@ -50,6 +51,7 @@ public class GithubApiService extends GithubResponseMapper implements ApiService
     }
 
     private List<Branch> getBranches(UserRepository repo) {
+        log.info("Connecting to Github Api...");
         List<BranchesSchema> branches = webClient
             .get()
             .uri(REPO_BRANCHES_ENDPOINT, repo.ownerLogin(), repo.repositoryName())

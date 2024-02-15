@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RequestPerHourExceededException.class)
     public ResponseEntity<Object> handleRequestPerHourExceededException(RequestPerHourExceededException exception) {
-        log.error("To many requests to github");
+        log.error("To many requests to github api");
         return ResponseEntity
             .status(HttpStatus.TOO_MANY_REQUESTS)
             .contentType(MediaType.APPLICATION_JSON)

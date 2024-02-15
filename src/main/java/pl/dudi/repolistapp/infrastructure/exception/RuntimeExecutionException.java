@@ -4,4 +4,8 @@ public class RuntimeExecutionException extends RuntimeException{
     public RuntimeExecutionException(String message) {
         super(message);
     }
+
+    public RuntimeExecutionException(Throwable cause) {
+        super(cause);
+    }
 }

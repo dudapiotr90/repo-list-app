@@ -1,6 +1,5 @@
 package pl.dudi.repolistapp.infrastructure.github;
 
-import org.springframework.web.client.RestClient;
 import pl.dudi.repolistapp.infrastructure.exception.RequestPerHourExceededException;
 import pl.dudi.repolistapp.infrastructure.exception.UserNotFoundException;
 
@@ -20,11 +19,4 @@ public interface GithubDetails {
             "API rate limit exceeded for your ip address. Max 60 requests/hour"
         );
     }
-
-    default RestClient.ResponseSpec.ErrorHandler handleExceededRequestLimit() {
-        return (request, response) -> {
-            throw getRequestPerHourExceededException();
-        };
-    }
-
 }

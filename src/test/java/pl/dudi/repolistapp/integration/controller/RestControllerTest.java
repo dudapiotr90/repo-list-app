@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = ApplicationController.class)
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class RestControllerTest {
 
@@ -31,7 +31,7 @@ public class RestControllerTest {
     void getRepositoryThrowsBadRequestCorrectly() throws Exception {
         // Given
         String userName = "anyUserName";
-        ErrorMessage message = ErrorMessage.of(
+        ErrorMessage message = new ErrorMessage(
             400,
             "Header: [Accept=application/json] is required"
         );

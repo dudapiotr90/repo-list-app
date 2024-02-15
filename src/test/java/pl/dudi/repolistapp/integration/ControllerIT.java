@@ -20,8 +20,8 @@ public class ControllerIT
     void applicationControllerWorksCorrectly() {
         // Given
         String username = "dudapiotr90";
-        stubForRepos(wireMockServer,username);
-        stubForBranches(wireMockServer,username);
+        stubForRepos(wireMockServer, username);
+        stubForBranches(wireMockServer, username);
         List<UserRepository> someRepos = TestResponse.getSomeRepos();
 
         // When
@@ -29,12 +29,11 @@ public class ControllerIT
 
         // Then
         assertThat(repositories).hasSize(5);
-        repositories.forEach(r->assertThat(r.getOwnerLogin()).isEqualTo(username));
+        repositories.forEach(r -> assertThat(r.ownerLogin()).isEqualTo(username));
         assertThat(repositories).usingRecursiveComparison()
             .ignoringFields("branches")
             .ignoringCollectionOrder()
             .isEqualTo(someRepos);
-
     }
 
     @Test
@@ -47,7 +46,7 @@ public class ControllerIT
         ErrorMessage errorResponse = getRepositoriesForNotExistingUser(username);
 
         // Then
-        assertThat(errorResponse.getStatus()).matches(HttpStatus::isClientError);
-        assertThat(errorResponse.getMessage()).contains("Not found user with login");
+        assertThat(errorResponse.status()).matches(HttpStatus::isClientError);
+        assertThat(errorResponse.message()).contains("Not found user with login");
     }
 }

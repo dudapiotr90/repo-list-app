@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static pl.dudi.repolistapp.infrastructure.configuration.WebClientConfiguration.DEFAULT_GITHUB_ACCEPT_HEADER;
+import static pl.dudi.repolistapp.infrastructure.github.GithubDetails.DEFAULT_GITHUB_ACCEPT_HEADER;
 
 public interface WiremockTestSupport {
     Map<String, String> BRANCHES = Map.of(
@@ -27,8 +27,8 @@ public interface WiremockTestSupport {
     ) {
         BRANCHES.forEach((repositoryName, fileName) ->
             wireMockServer.stubFor(get(REPO_BRANCHES_ENDPOINT.formatted(ownerLogin, repositoryName))
-                .withHeader(HttpHeaders.ACCEPT, including(DEFAULT_GITHUB_ACCEPT_HEADER))
-                .withHeader(HttpHeaders.CONTENT_TYPE, including(MediaType.APPLICATION_JSON_VALUE))
+                .withHeader(HttpHeaders.ACCEPT, including(MediaType.APPLICATION_JSON_VALUE))
+                .withHeader(HttpHeaders.CONTENT_TYPE, including(DEFAULT_GITHUB_ACCEPT_HEADER))
                 .willReturn(aResponse()
                     .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .withBodyFile("wiremock/branch/%s".formatted(fileName))
@@ -43,8 +43,8 @@ public interface WiremockTestSupport {
         String username
     ) {
         wireMockServer.stubFor(get(USER_REPO_ENDPOINT.formatted(username))
-            .withHeader(HttpHeaders.ACCEPT, including(DEFAULT_GITHUB_ACCEPT_HEADER))
-            .withHeader(HttpHeaders.CONTENT_TYPE, including(MediaType.APPLICATION_JSON_VALUE))
+            .withHeader(HttpHeaders.ACCEPT, including(MediaType.APPLICATION_JSON_VALUE))
+            .withHeader(HttpHeaders.CONTENT_TYPE, including(DEFAULT_GITHUB_ACCEPT_HEADER))
             .willReturn(aResponse()
                 .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .withBodyFile("wiremock/repos.json")
@@ -55,12 +55,21 @@ public interface WiremockTestSupport {
 
     default void stubForNotFoundUser(WireMockServer wireMockServer) {
         wireMockServer.stubFor(get(USER_REPO_ENDPOINT.formatted("nonExistingUser"))
-            .withHeader(HttpHeaders.ACCEPT, including(DEFAULT_GITHUB_ACCEPT_HEADER))
-            .withHeader(HttpHeaders.CONTENT_TYPE, including(MediaType.APPLICATION_JSON_VALUE))
+            .withHeader(HttpHeaders.ACCEPT, including(MediaType.APPLICATION_JSON_VALUE))
+            .withHeader(HttpHeaders.CONTENT_TYPE, including(DEFAULT_GITHUB_ACCEPT_HEADER))
             .willReturn(aResponse()
                 .withStatus(HttpStatus.NOT_FOUND.value())
                 .withBodyFile("wiremock/errors/error1.json")
             )
         );
     }
+    default void stubForRequestLimitExceeded(WireMockServer wireMockServer) {
+        wireMockServer.stubFor(get(urlPathMatching("/users/[^/]+/repos"))
+            .withHeader(HttpHeaders.ACCEPT, including(MediaType.APPLICATION_JSON_VALUE) )
+            .withHeader(HttpHeaders.CONTENT_TYPE, including(DEFAULT_GITHUB_ACCEPT_HEADER))
+            .willReturn(aResponse()
+                .withStatus(403)));
+    }
+
+
 }
