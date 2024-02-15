@@ -6,7 +6,3 @@ logging:
   level:
     org:
       springframework: DEBUG
-    com:
-      github:
-        tomakehurst:
-          wiremock: DEBUG

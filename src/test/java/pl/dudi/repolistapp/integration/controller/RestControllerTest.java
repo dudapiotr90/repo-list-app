@@ -3,11 +3,14 @@ package pl.dudi.repolistapp.integration.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.dudi.repolistapp.controller.ApplicationController;
 import pl.dudi.repolistapp.dto.ErrorMessage;
@@ -16,6 +19,7 @@ import pl.dudi.repolistapp.service.ApiService;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@RunWith(value = SpringRunner.class)
 @WebMvcTest(controllers = ApplicationController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -25,6 +29,7 @@ public class RestControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
+    @Qualifier("withWebClient")
     private ApiService apiService;
 
     @Test

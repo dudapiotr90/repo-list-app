@@ -16,7 +16,6 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 @Slf4j
-//@Primary
 @Service("withWebClient")
 @RequiredArgsConstructor
 public class GithubApiService extends GithubResponseMapper implements ApiService, GithubDetails {

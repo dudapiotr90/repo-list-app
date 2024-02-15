@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import pl.dudi.repolistapp.dto.Branch;
@@ -71,7 +72,7 @@ public class GithubApiServiceWithRestClient extends GithubResponseMapper impleme
             throw handleExecutionException(e);
         }
     }
-
+    @Async
     private List<BranchesSchema> getBranches(UserRepository repository) {
         log.info("New thread created: {}", Thread.currentThread().threadId());
         log.info("Connecting to Github Api... Fetching branches");

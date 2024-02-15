@@ -2,6 +2,7 @@ package pl.dudi.repolistapp.infrastructure.mapper;
 
 import github.api.responses.branches.BranchesSchema;
 import github.api.responses.repos.ReposSchema;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import pl.dudi.repolistapp.dto.Branch;
 import pl.dudi.repolistapp.dto.UserRepository;
@@ -19,6 +20,7 @@ public abstract class GithubResponseMapper {
         );
     }
 
+    @Async
     public Branch map(BranchesSchema branch) {
         return new Branch(branch.getName(), branch.getCommit().getSha());
     }
