@@ -10,7 +10,7 @@ repositories, excluding forks.
 Before you begin, ensure you have the following installed:
 
 - Java 21 Development Kit (JDK)
-- Gradle 8.5
+- Gradle 8.6
 
 ```bash
 git clone https://github.com/dudapiotr90/repo-list-app.git
@@ -106,7 +106,7 @@ Application accepts only 60 requests per hour due to github restriction policy: 
 ### Development
 
 - Java21
-- SpringBoot 3
+- SpringBoot 3.2
 - Lombok
 - jsonschema2pojo
 - springdoc-openapi
